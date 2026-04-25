@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.itson.catalogoproductos";
+package producto;
+
+// interfaz que declara los métodos que pueden llamarse
+service CatalogoService{
+    rpc VerificarYObtenerProducto (ProductoRequest) returns (ProductoResponse) {}
+    rpc ObtenerCatalogo (CatalogoRequest) returns (stream ProductoResponse) {}
+}
+
+// declaración de los mensajes de solicitud y respuesta
+message ProductoRequest{
+    string sku = 1; //indica la posición que tiene en la cadena de bits :P
+}
+
+enum TipoProducto {
+    TIPO_NO_ESPECIFICADO = 0; // valor default
+    LIQUIDO = 1;
+    SOLIDO = 2;
+    CREMA_PASTA = 3;
+    GEL = 4;
+    AEROSOL = 5;
+    POLVO = 6;
+    TOALLITAS = 7;
+}
+
+message ProductoResponse{
+    string sku = 1;
+    string nombre = 2;
+    double costo_unitario = 3;
+    TipoProducto tipo = 4;
+    bool disponible = 5;
+
+}
+
+message CatalogoRequest{
+    // filtro de busqueda, si manda 0, envía todo el catálogo
+    TipoProducto tipo_producto = 1;
+
+    // permite que solo regrese los productos disponibles
+    bool solo_disponibles = 2;
+}
