@@ -1,0 +1,57 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "org.itson.servicioinspeccion";
+package reporte;
+
+service ReportesService{
+    rpc registrarReporte(NuevoReporteRequest) returns (ReporteResponse) {}
+    rpc obtenerReporte(ReporteRequest) returns (ReporteResponse) {}
+    rpc obtenerReportes(ReporteRequest) returns (stream ReporteResponse) {}
+}
+
+// dto para un nuevo reporte
+message NuevoReporteRequest{
+    google.protobuf.Timestamp fecha_hora = 1;
+    string nombre_inspector = 2;
+    string sku_producto = 3;
+    string codigo_defecto = 4;
+    int32 tamano_muestra = 5;
+    string lote_producto = 6;
+    int32 cantidad_rechazada = 7;
+    string comentarios = 8;
+}
+
+enum Filtro{
+    TODOS = 0;
+    PRODUCTO = 1;
+    FECHA = 2;
+    LOTE = 3;
+    INSPECTOR = 4;
+    DEFECTO = 5;
+}
+
+message ReporteRequest{
+    Filtro filtro = 1;
+    oneof valor_filtro {
+        string sku_producto = 2;
+        string fecha_reporte = 3;
+        string lote_producto = 4;
+        string nombre_inspector = 5;
+        string tipo_defecto = 6;
+        string id_reporte = 7;
+    }
+}
+
+message ReporteResponse{
+    string id_reporte = 1;
+    google.protobuf.Timestamp fecha_hora = 2;
+    string nombre_inspector = 3;
+    string sku_producto = 4;
+    string codigo_defecto = 5;
+    int32 tamano_muestra = 6;
+    string lote_producto = 7;
+    int32 cantidad_rechazada = 8;
+    string comentarios = 9;
+}
