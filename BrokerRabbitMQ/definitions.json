@@ -1,0 +1,108 @@
+{
+  "vhosts": [
+    { "name": "/" }
+  ],
+  "users": [
+    {
+      "name": "admin",
+      "password_hash": "8/tHoGiTOZFMBV96J08QOIkZMjYrjXhxCrAGsq7K3/0=",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    },
+    {
+      "name": "servicio_inspecciones",
+      "password_hash": "q3tHoGiTOZFMBV96J08QOIkZMjYrjXhxCrAGsq7K3AB=",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ""
+    },
+    {
+      "name": "servicio_notificaciones",
+      "password_hash": "n4tHoGiTOZFMBV96J08QOIkZMjYrjXhxCrAGsq7K3CD=",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ""
+    }
+  ],
+  "permissions": [
+    { "user": "admin",                  "vhost": "/", "configure": ".*", "write": ".*", "read": ".*" },
+    { "user": "servicio_inspecciones",  "vhost": "/", "configure": "",   "write": "defectos.exchange", "read": "" },
+    { "user": "servicio_notificaciones","vhost": "/", "configure": "",   "write": "",   "read": ".*" }
+  ],
+  "exchanges": [
+    {
+      "name": "defectos.exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "defectos.exchange.dlx",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    {
+      "name": "cola.notificaciones.qa",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "defectos.exchange.dlx",
+        "x-dead-letter-routing-key": "dead.notificaciones.qa",
+        "x-message-ttl": 86400000,
+        "x-max-length": 10000
+      }
+    },
+    {
+      "name": "cola.notificaciones.erp",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "defectos.exchange.dlx",
+        "x-dead-letter-routing-key": "dead.notificaciones.erp",
+        "x-message-ttl": 86400000,
+        "x-max-length": 10000
+      }
+    },
+    {
+      "name": "cola.dead.notificaciones",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "defectos.exchange",
+      "vhost": "/",
+      "destination": "cola.notificaciones.qa",
+      "destination_type": "queue",
+      "routing_key": "defecto.#",
+      "arguments": {}
+    },
+    {
+      "source": "defectos.exchange",
+      "vhost": "/",
+      "destination": "cola.notificaciones.erp",
+      "destination_type": "queue",
+      "routing_key": "defecto.#",
+      "arguments": {}
+    },
+    {
+      "source": "defectos.exchange.dlx",
+      "vhost": "/",
+      "destination": "cola.dead.notificaciones",
+      "destination_type": "queue",
+      "routing_key": "#",
+      "arguments": {}
+    }
+  ],
+  "policies": []
+}

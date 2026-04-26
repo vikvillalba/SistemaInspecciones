@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+
+  # broquer Rabbit MQ
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: broker-inspecciones
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"     # AMQP (del servicio de inspecciones)
+      - "15672:15672"   # Management UI — http://localhost:15672 (admin/admin)
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./broker/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./broker/definitions.json:/etc/rabbitmq/definitions.json:ro
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # servicio de notificaciones
+  servicio-notificaciones:
+    build:
+      context: ./servicio-notificaciones
+      dockerfile: Dockerfile
+    container_name: servicio-notificaciones
+    ports:
+      - "8080:8080"     # Publisher API — POST /eventos/defecto
+    environment:
+      RABBITMQ_URL:    amqp://admin:admin@rabbitmq:5672/
+      EXCHANGE:        defectos.exchange
+      COLA_QA:         cola.notificaciones.qa
+      COLA_ERP:        cola.notificaciones.erp
+      # URLs de los sistemas destino (ajustar según entorno)
+      SISTEMA_QA_URL:  http://sistema-qa/api/defectos
+      SISTEMA_ERP_URL: http://sistema-erp/api/defectos
+      HTTP_TIMEOUT:    "10"
+      MAX_RETRIES:     "3"
+      RETRY_DELAY:     "2"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    restart: on-failure
+
+volumes:
+  rabbitmq_data:
