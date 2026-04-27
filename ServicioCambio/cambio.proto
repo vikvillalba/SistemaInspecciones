@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.itson.catalogoproductos";
+package producto;
+
+service CambioService {
+  rpc GetConversion (ConversionRequest) returns (ConversionResponse);
+}
+
+message ConversionRequest {
+  string sku = 1;
+  double cantidad = 2;
+}
+
+message ConversionResponse {
+  double total_mxn = 1;
+  double total_usd = 2;
+  double tasa_usada = 3;
+}
+
+service CatalogoService{
+    rpc VerificarYObtenerProducto (ProductoRequest) returns (ProductoResponse) {}
+    rpc ObtenerCatalogo (CatalogoRequest) returns (stream ProductoResponse) {}
+}
+
+message ProductoRequest{
+    string sku = 1; 
+}
+
+enum TipoProducto {
+    TIPO_NO_ESPECIFICADO = 0; 
+    LIQUIDO = 1;
+    SOLIDO = 2;
+    CREMA_PASTA = 3;
+    GEL = 4;
+    AEROSOL = 5;
+    POLVO = 6;
+    TOALLITAS = 7;
+}
+
+message ProductoResponse{
+    string sku = 1;
+    string nombre = 2;
+    double costo_unitario = 3;
+    TipoProducto tipo = 4;
+    bool disponible = 5;
+}
+
+message CatalogoRequest{
+    TipoProducto tipo_producto = 1;
+
+    bool solo_disponibles = 2;
+}
