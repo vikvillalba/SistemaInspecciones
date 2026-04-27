@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.itson.catalogodefectos";
+package defecto;
+
+// interfaz que declara los métodos que pueden llamarse
+service DefectosService{
+    rpc obtenerDefecto (DefectoRequest) returns (DefectoResponse){}
+    rpc obtenerDefectosPorGravedad (GravedadRequest) returns (stream DefectoResponse) {}
+}
+
+enum Gravedad {
+    TODOS = 0;
+    MENOR =1;
+    MAYOR = 2;
+    CRITICO = 3;
+}
+
+// declaración de los mensajes de solicitud y respuesta
+message DefectoRequest{
+    string codigo_defecto = 1; //indica la posición que tiene en la cadena de bits :P
+}
+
+message GravedadRequest {
+    Gravedad nivel = 1;
+}
+
+message DefectoResponse{
+    string codigo = 1;
+    string nombre = 2;
+    Gravedad gravedad = 3;
+
+}
