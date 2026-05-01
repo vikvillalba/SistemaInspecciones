@@ -1,0 +1,225 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, sans-serif;
+    background: white;
+    color: #1a1a2e;
+}
+
+.barrita {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #122c4a;
+    padding: 0 2rem;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.barrita-titulo {
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.barrita-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.barrita-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+}
+
+.barrita-links a:hover {
+    color: white;
+    background: #1b416d;
+}
+
+.barrita-links a.activo {
+    color: white;
+    background: #215087;
+}
+
+.pagina {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.pagina h1 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    color: #122c4a;
+    padding-bottom: 0.5rem;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px #0000004d;
+}
+
+.tabla th {
+    background: #122c4a;
+    color: white;
+    padding: 0.85rem 1rem;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.tabla td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 0.9rem;
+}
+
+.tabla tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla tbody tr:hover {
+    background: #122c4a11;
+}
+
+.filtros {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.filtros label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.filtros select,
+.filtros input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #c8d0da;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: white;
+    outline: none;
+}
+
+.filtros select:focus,
+.filtros input:focus {
+    border-color: #122c4a;
+}
+
+.formulario {
+    background: white;
+    padding: 2rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px #0000004d;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
+    max-width: 750px;
+}
+
+.formulario label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #122c4a;
+    margin-bottom: 0.2rem;
+    display: block;
+}
+
+.formulario input,
+.formulario select,
+.formulario textarea {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #ccdaea;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+    background: white;
+}
+
+.formulario input:focus,
+.formulario select:focus,
+.formulario textarea:focus {
+    border-color: #122c4a;
+    background: white;
+}
+
+.formulario button {
+    grid-column: 1 / -1;
+    padding: 0.75rem;
+    background: #122c4a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.formulario button:hover:not(:disabled) {
+    background: #1a416c;
+}
+
+.formulario button:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+}
+
+.detalle,
+.conversion {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px #0000004d;
+    margin-bottom: 1.5rem;
+}
+
+.detalle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem 2rem;
+}
+
+.detalle p,
+.conversion p {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.detalle strong {
+    color: #4a5568;
+}
+
+.conversion h2 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #1a1a2e;
+}
+
+.error {
+    color: #e53e3e;
+    background: #fff5f5;
+    border: 1px solid #feb2b2;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}

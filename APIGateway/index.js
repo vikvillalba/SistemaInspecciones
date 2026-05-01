@@ -1,4 +1,4 @@
-import "dotenv/config"; // debe ser el primer import para que process.env esté disponible
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 
