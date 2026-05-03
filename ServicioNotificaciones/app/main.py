@@ -19,7 +19,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger("servicio.notificaciones")
  
-RABBITMQ_URL = "amqp://guest:guest@localhost:5672/"
+
+RABBITMQ_URL = "amqp://notificaciones:notificaciones123@localhost:5672/"
 COLA_QA      = "cola.notificaciones.qa"
 COLA_ERP     = "cola.notificaciones.erp"
  

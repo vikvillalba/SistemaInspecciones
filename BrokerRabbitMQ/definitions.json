@@ -5,27 +5,45 @@
   "users": [
     {
       "name": "admin",
-      "password_hash": "8/tHoGiTOZFMBV96J08QOIkZMjYrjXhxCrAGsq7K3/0=",
+      "password_hash": "AAn5r4sphcC/bv1C42l/3+MVdxotuowJB+b1KXlgPVnDna6F",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": "administrator"
     },
     {
-      "name": "servicio_inspecciones",
-      "password_hash": "q3tHoGiTOZFMBV96J08QOIkZMjYrjXhxCrAGsq7K3AB=",
+      "name": "inspecciones",
+      "password_hash": "AFi6VkxoplwvtX9OA402aeABluogrFCRyCJKlPwx+jmhTxLK",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": ""
     },
     {
-      "name": "servicio_notificaciones",
-      "password_hash": "n4tHoGiTOZFMBV96J08QOIkZMjYrjXhxCrAGsq7K3CD=",
+      "name": "notificaciones",
+      "password_hash": "h6YP+mYlCdLwX2M6lE/dUNLZhLtciKz6eeQK265EfS4bGDxC",
       "hashing_algorithm": "rabbit_password_hashing_sha256",
       "tags": ""
     }
   ],
   "permissions": [
-    { "user": "admin",                  "vhost": "/", "configure": ".*", "write": ".*", "read": ".*" },
-    { "user": "servicio_inspecciones",  "vhost": "/", "configure": "",   "write": "defectos.exchange", "read": "" },
-    { "user": "servicio_notificaciones","vhost": "/", "configure": "",   "write": "",   "read": ".*" }
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "inspecciones",
+      "vhost": "/",
+      "configure": "",
+      "write": "defectos.exchange",
+      "read": ""
+    },
+    {
+      "user": "notificaciones",
+      "vhost": "/",
+      "configure": "",
+      "write": "",
+      "read": ".*"
+    }
   ],
   "exchanges": [
     {
