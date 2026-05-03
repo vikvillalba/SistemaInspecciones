@@ -1,3 +1,5 @@
 /CatalogoDefectos/target/
 /ServicioInspecciones/target/
 node_modules/
+/nbproject/private/
+/frontend/nbproject/private/
