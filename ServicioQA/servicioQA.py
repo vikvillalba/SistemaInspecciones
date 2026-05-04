@@ -15,7 +15,7 @@ async def escuchar_notificaciones_qa():
                 if datos.get("requiere_atencion"):
                     print(f"ALERTA CRÍTICA: Defecto {datos['codigo_defecto']} en producto {datos['sku_producto']}")
                 else:
-                    print(f"Notificación recibida: {datos['nombre_defecto']}")
+                    print(f"Notificación recibida para producto {datos['sku_producto']}: {datos['nombre_defecto']}")
         except websockets.ConnectionClosed:
             print("Conexión cerrada con el servidor")
 
