@@ -1,25 +1,36 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react"; 
 import { obtenerReportes } from "../api/index";
 import { type Reporte } from "../types/index";
 
 export default function Reportes() {
     const navigate = useNavigate();
+    const { getAccessTokenSilently } = useAuth0(); // <-- Sacamos la función
+
     const [reportes, setReportes] = useState<Reporte[]>([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState("");
     const [filtro, setFiltro] = useState("TODOS");
     const [valor, setValor] = useState("");
 
-    const cargar = () => {
-        setCargando(true);
-        obtenerReportes(filtro, valor)
-            .then(setReportes)
-            .catch(() => setError("No se pudieron cargar los reportes"))
-            .finally(() => setCargando(false));
-    };
+    useEffect(() => { 
+        const cargar = async () => {
+            setCargando(true);
+            try {
+                
+                const token = await getAccessTokenSilently();
+                const data = await obtenerReportes(filtro, valor, token);
+                setReportes(data);
+            } catch (err) {
+                setError("No se pudieron cargar los reportes");
+            } finally {
+                setCargando(false);
+            }
+        };
 
-    useEffect(() => { cargar(); }, []);
+        cargar(); 
+    }, [filtro, valor, getAccessTokenSilently]);
 
     return (
         <div className="pagina">

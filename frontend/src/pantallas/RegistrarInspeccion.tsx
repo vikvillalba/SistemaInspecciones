@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react"; 
 import { obtenerProductos, obtenerDefectos, registrarReporte } from "../api/index";
 import { type Producto, type Defecto } from "../types/index";
 
 export default function RegistrarInspeccion() {
     const navigate = useNavigate();
+    const { getAccessTokenSilently } = useAuth0();
 
     const [productos, setProductos] = useState<Producto[]>([]);
     const [defectos, setDefectos] = useState<Defecto[]>([]);
@@ -35,14 +37,19 @@ export default function RegistrarInspeccion() {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault(); // evita que recargue la página
+        e.preventDefault();
         setEnviando(true);
         setError("");
         try {
-            const reporte = await registrarReporte(form);
-            navigate(`/reportes/${reporte.id_reporte}`);
-        } catch {
-            setError("No se pudo registrar el reporte. Verifica los datos.");
+            // 1. Conseguimos el token silenciosamente
+            const token = await getAccessTokenSilently(); 
+            
+            // 2. Lo enviamos como parámetro a tu API
+            await registrarReporte(form, token); 
+            navigate("/reportes");
+        } catch (error) {
+            setError("Error al registrar la inspección. Verifica tu sesión.");
+            console.error(error);
         } finally {
             setEnviando(false);
         }
@@ -52,8 +59,7 @@ export default function RegistrarInspeccion() {
         <div className="pagina">
             <h1>Registrar Inspección</h1>
             {error && <p className="error">{error}</p>}
-
-            <form className="formulario" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="formulario">
                 <label>Inspector</label>
                 <input name="nombreInspector" value={form.nombreInspector} onChange={handleChange} required />
 

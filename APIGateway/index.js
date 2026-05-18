@@ -8,14 +8,19 @@ import inspeccionesRouter from "./routes/inspecciones.js";
 import cambioRouter from "./routes/cambio.js";
 import errorHandler from "./middleware/errorHandler.js";
 
+import { validarToken } from "./middleware/auth0.js";
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/api/productos", productosRouter);
 app.use("/api/defectos", defectosRouter);
-app.use("/api/inspecciones", inspeccionesRouter);
 app.use("/api/cambio", cambioRouter);
+
+//proteger la ruta con el middleware 
+app.use("/api/inspecciones", validarToken, inspeccionesRouter);
+
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 app.use(errorHandler);
 

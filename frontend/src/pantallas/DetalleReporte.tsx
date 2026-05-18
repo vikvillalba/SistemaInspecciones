@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react"; 
 import { obtenerReporte, obtenerConversion } from "../api/index";
 import { type Reporte, type Conversion } from "../types/index";
 
 export default function DetalleReporte() {
   const { id } = useParams<{ id: string }>();
+  const { getAccessTokenSilently } = useAuth0(); 
+
   const [reporte, setReporte] = useState<Reporte | null>(null);
   const [conversion, setConversion] = useState<Conversion | null>(null);
   const [cargando, setCargando] = useState(true);
@@ -12,15 +15,28 @@ export default function DetalleReporte() {
 
   useEffect(() => {
     if (!id) return;
-    obtenerReporte(id)
-      .then((data) => {
-        setReporte(data);
-        return obtenerConversion(data.sku_producto, data.cantidad_rechazada);
-      })
-      .then(setConversion)
-      .catch(() => setError("No se pudo cargar el reporte"))
-      .finally(() => setCargando(false));
-  }, [id]);
+
+    // Envolvemos tu lógica en una función asíncrona para poder usar await con el token
+    const cargarDatos = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        obtenerReporte(id, token)
+          .then((data) => {
+            setReporte(data);
+            return obtenerConversion(data.sku_producto, data.cantidad_rechazada);
+          })
+          .then(setConversion)
+          .catch(() => setError("No se pudo cargar el reporte"))
+          .finally(() => setCargando(false));
+
+      } catch (err) {
+        setError("Error de autenticación al intentar cargar el reporte");
+        setCargando(false);
+      }
+    };
+
+    cargarDatos();
+  }, [id, getAccessTokenSilently]);
 
   if (cargando) return <p>Cargando...</p>;
   if (error) return <p className="error">{error}</p>;
