@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')!).render(
       authorizationParams={{
         redirect_uri: window.location.origin,
         audience: "https://api.inspecciones.com",
-        scope: "openid profile email"
+        scope: "openid profile email read:productos read:defectos write:inspecciones"
 
       }}
     >

@@ -14,11 +14,10 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/api/productos", productosRouter);
-app.use("/api/defectos", defectosRouter);
-app.use("/api/cambio", cambioRouter);
-
-//proteger la ruta con el middleware 
+// Proteger las rutas con el middleware validarToken de Auth0
+app.use("/api/productos", validarToken, productosRouter);
+app.use("/api/defectos", validarToken, defectosRouter);
+app.use("/api/cambio", validarToken, cambioRouter);
 app.use("/api/inspecciones", validarToken, inspeccionesRouter);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));

@@ -23,7 +23,7 @@ export default function DetalleReporte() {
         obtenerReporte(id, token)
           .then((data) => {
             setReporte(data);
-            return obtenerConversion(data.sku_producto, data.cantidad_rechazada);
+            return obtenerConversion(data.sku_producto, data.cantidad_rechazada, token);
           })
           .then(setConversion)
           .catch(() => setError("No se pudo cargar el reporte"))

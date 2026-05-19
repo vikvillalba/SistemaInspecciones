@@ -24,9 +24,23 @@ export default function RegistrarInspeccion() {
     });
 
     useEffect(() => {
-        obtenerProductos().then(setProductos);
-        obtenerDefectos().then(setDefectos);
-    }, []);
+        const cargarOpciones = async () => {
+            try {
+                const token = await getAccessTokenSilently();
+                
+                // Pedimos productos y defectos usando el token
+                const prods = await obtenerProductos(0, false, token);
+                const defs = await obtenerDefectos(0, token);
+                
+                setProductos(prods);
+                setDefectos(defs);
+            } catch (err) {
+                setError("Error al cargar los catálogos");
+            }
+        };
+
+        cargarOpciones();
+    }, [getAccessTokenSilently]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

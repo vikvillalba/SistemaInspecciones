@@ -8,10 +8,8 @@ import Reportes from "./pantallas/Reportes";
 import DetalleReporte from "./pantallas/DetalleReporte";
 
 export default function App() {
-  //funciones y estados de Auth0
   const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
-  // Pantalla de carga mientras Auth0 verifica si hay una sesión activa
   if (isLoading) {
     return (
       <div style={{ textAlign: "center", marginTop: "100px" }}>
@@ -20,7 +18,6 @@ export default function App() {
     );
   }
 
-  // Si el usuario NO está autenticado, bloqueamos las rutas y mostramos el Login
   if (!isAuthenticated) {
     return (
       <div style={{ textAlign: "center", marginTop: "100px" }}>
@@ -36,7 +33,6 @@ export default function App() {
     );
   }
 
-  //Si SÍ está autenticado entra a la aplicacion 
   return (
     <BrowserRouter>
       <Barrita />

@@ -1,20 +1,31 @@
 import { useEffect, useState } from "react";
 import { obtenerDefectos } from "../api/index";
 import { type Defecto } from "../types/index";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Defectos() {
+    const { getAccessTokenSilently } = useAuth0(); // <-- 2. Sacar la función
     const [defectos, setDefectos] = useState<Defecto[]>([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState("");
     const [filtroGravedad, setFiltroGravedad] = useState(0);
 
     useEffect(() => {
-        setCargando(true);
-        obtenerDefectos(filtroGravedad)
-            .then((data) => setDefectos(data))
-            .catch(() => setError("No se pudieron cargar los defectos"))
-            .finally(() => setCargando(false));
-    }, [filtroGravedad])
+        const cargar = async () => {
+            setCargando(true);
+            try {
+                const token = await getAccessTokenSilently();
+                const data = await obtenerDefectos(filtroGravedad, token); // <-- 3. Pasar el token
+                setDefectos(data);
+            } catch (err) {
+                setError("No se pudieron cargar los defectos");
+            } finally {
+                setCargando(false);
+            }
+        };
+
+        cargar();
+    }, [filtroGravedad, getAccessTokenSilently]);
 
     return (
         <div className="pagina">

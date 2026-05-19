@@ -1,32 +1,48 @@
 const BASE_URL = "http://localhost:3000/api";
 
-
-export const obtenerProductos = async (tipo = 0, soloDisponibles = false) => {
-    const res = await fetch(`${BASE_URL}/productos?tipo=${tipo}&soloDisponibles=${soloDisponibles}`);
+// --- PRODUCTOS ---
+export const obtenerProductos = async (tipo = 0, soloDisponibles = false, token: string) => {
+    const res = await fetch(`${BASE_URL}/productos?tipo=${tipo}&soloDisponibles=${soloDisponibles}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     if (!res.ok) throw new Error("Error al obtener productos");
     return res.json();
 };
 
-export const obtenerProducto = async (sku: string) => {
-    const res = await fetch(`${BASE_URL}/productos/${sku}`);
+export const obtenerProducto = async (sku: string, token: string) => {
+    const res = await fetch(`${BASE_URL}/productos/${sku}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     if (!res.ok) throw new Error("Producto no encontrado");
     return res.json();
 };
 
-
-export const obtenerDefectos = async (gravedad = 0) => {
-    const res = await fetch(`${BASE_URL}/defectos?gravedad=${gravedad}`);
+// --- DEFECTOS ---
+export const obtenerDefectos = async (gravedad = 0, token: string) => {
+    const res = await fetch(`${BASE_URL}/defectos?gravedad=${gravedad}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     if (!res.ok) throw new Error("Error al obtener defectos");
     return res.json();
 };
 
-export const obtenerDefecto = async (codigo: string) => {
-    const res = await fetch(`${BASE_URL}/defectos/${codigo}`);
+export const obtenerDefecto = async (codigo: string, token: string) => {
+    const res = await fetch(`${BASE_URL}/defectos/${codigo}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     if (!res.ok) throw new Error("Defecto no encontrado");
     return res.json();
 };
 
-
+// --- INSPECCIONES (Estos ya los tenías bien) ---
 export const registrarReporte = async (datos: {
     nombreInspector: string;
     skuProducto: string;
@@ -68,9 +84,13 @@ export const obtenerReporte = async (id: string, token: string) => {
     return res.json();
 };
 
-
-export const obtenerConversion = async (sku: string, cantidad: number) => {
-    const res = await fetch(`${BASE_URL}/cambio?sku=${sku}&cantidad=${cantidad}`);
+// --- CONVERSIÓN ---
+export const obtenerConversion = async (sku: string, cantidad: number, token: string) => {
+    const res = await fetch(`${BASE_URL}/cambio?sku=${sku}&cantidad=${cantidad}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     if (!res.ok) throw new Error("Error al obtener conversión");
     return res.json();
 };
