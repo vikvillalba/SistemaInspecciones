@@ -6,13 +6,13 @@ import { type Reporte } from "../types/index";
 
 export default function Reportes() {
     const navigate = useNavigate();
-    const { getAccessTokenSilently } = useAuth0(); // <-- Sacamos la función
+    const { getAccessTokenSilently } = useAuth0(); 
 
     const [reportes, setReportes] = useState<Reporte[]>([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState("");
-    const [filtro, setFiltro] = useState("TODOS");
-    const [valor, setValor] = useState("");
+    const filtro = "TODOS";
+    const valor = "";
 
     useEffect(() => { 
         const cargar = async () => {

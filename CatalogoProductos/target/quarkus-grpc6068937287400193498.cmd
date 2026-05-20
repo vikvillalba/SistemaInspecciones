@@ -1,0 +1,2 @@
+@echo off
+"C:\Program Files\Java\jdk-24\bin\java.EXE" -cp "C:\Users\pablo\.m2\repository\io\quarkus\quarkus-grpc-protoc-plugin\3.15.1\quarkus-grpc-protoc-plugin-3.15.1-shaded.jar" io.quarkus.grpc.protoc.plugin.MutinyGrpcGenerator

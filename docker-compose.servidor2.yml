@@ -7,6 +7,8 @@ services:
         - "8003"
       environment:
         - DB_HOST=db-catalogo-defectos
+        - QUARKUS_DATASOURCE_USERNAME=root         
+        - QUARKUS_DATASOURCE_PASSWORD=ITSON
       depends_on:
         db-catalogo-defectos:
           condition: service_healthy
@@ -20,6 +22,8 @@ services:
         - "8001"
       environment:
         - DB_HOST=db-catalogo-productos
+        - QUARKUS_DATASOURCE_USERNAME=root         
+        - QUARKUS_DATASOURCE_PASSWORD=ITSON
       depends_on:
         db-catalogo-productos:
           condition: service_healthy
@@ -35,6 +39,8 @@ services:
         - DB_HOST=db-reportes-inspecciones
         - CATALOGO_PRODUCTOS_HOST=catalogo-productos
         - CATALOGO_DEFECTOS_HOST=catalogo-defectos
+        - QUARKUS_DATASOURCE_USERNAME=root         
+        - QUARKUS_DATASOURCE_PASSWORD=ITSON
         - RABBITMQ_HOST=rabbitmq
       depends_on:
         db-reportes-inspecciones:
@@ -51,11 +57,11 @@ services:
       command: --default-authentication-plugin=mysql_native_password
       environment:
         MYSQL_DATABASE: CatalogoDefectos
-        MYSQL_ROOT_PASSWORD: Itson
-      expose:
-        - "3306"
+        MYSQL_ROOT_PASSWORD: ITSON
+      ports:
+        - "3307:3306"
       healthcheck:
-        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pItson"]
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pITSON"]
         interval: 10s
         timeout: 5s
         retries: 10
@@ -68,11 +74,11 @@ services:
       command: --default-authentication-plugin=mysql_native_password
       environment:
         MYSQL_DATABASE: CatalogoProductos
-        MYSQL_ROOT_PASSWORD: Itson
-      expose:
-        - "3306"
+        MYSQL_ROOT_PASSWORD: ITSON
+      ports:
+        - "3308:3306"
       healthcheck:
-        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pItson"]
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pITSON"]
         interval: 10s
         timeout: 5s
         retries: 10
@@ -85,11 +91,11 @@ services:
       command: --default-authentication-plugin=mysql_native_password
       environment:
         MYSQL_DATABASE: ReportesInspecciones
-        MYSQL_ROOT_PASSWORD: Itson
-      expose:
-        - "3306"
+        MYSQL_ROOT_PASSWORD: ITSON
+      ports:
+        - "3309:3306"
       healthcheck:
-        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pItson"]
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pITSON"]
         interval: 10s
         timeout: 5s
         retries: 10

@@ -5,4 +5,4 @@ RUN pip install websockets
 COPY . .
 
 
-CMD ["python", "ServicioQA.py"]
+CMD ["python", "servicioQA.py"]
