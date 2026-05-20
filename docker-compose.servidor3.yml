@@ -28,7 +28,7 @@ services:
   # servicio de notificaciones
   servicio-notificaciones:
     build:
-      context: ./servicio-notificaciones
+      context: ./ServicioNotificaciones/app
       dockerfile: Dockerfile
     container_name: servicio-notificaciones
     ports:

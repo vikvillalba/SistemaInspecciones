@@ -8,7 +8,8 @@ services:
       environment:
         - DB_HOST=db-catalogo-defectos
       depends_on:
-        - db-catalogo-defectos
+        db-catalogo-defectos:
+          condition: service_healthy
       networks:
         - red-global-despliegue
       
@@ -20,7 +21,8 @@ services:
       environment:
         - DB_HOST=db-catalogo-productos
       depends_on:
-        - db-catalogo-productos
+        db-catalogo-productos:
+          condition: service_healthy
       networks:
         - red-global-despliegue
 
@@ -35,9 +37,12 @@ services:
         - CATALOGO_DEFECTOS_HOST=catalogo-defectos
         - RABBITMQ_HOST=rabbitmq
       depends_on:
-        - db-reportes-inspecciones
-        - catalogo-defectos
-        - catalogo-productos
+        db-reportes-inspecciones:
+          condition: service_healthy
+        catalogo-defectos:
+          condition: service_started
+        catalogo-productos:
+          condition: service_started
       networks:
         - red-global-despliegue
 
@@ -46,9 +51,15 @@ services:
       command: --default-authentication-plugin=mysql_native_password
       environment:
         MYSQL_DATABASE: CatalogoDefectos
-        MYSQL_ROOT_PASSWORD: itson
-      ports:
-        - "3306:3306"
+        MYSQL_ROOT_PASSWORD: Itson
+      expose:
+        - "3306"
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pItson"]
+        interval: 10s
+        timeout: 5s
+        retries: 10
+        start_period: 30s
       networks:
         - red-global-despliegue
 
@@ -57,9 +68,15 @@ services:
       command: --default-authentication-plugin=mysql_native_password
       environment:
         MYSQL_DATABASE: CatalogoProductos
-        MYSQL_ROOT_PASSWORD: itson
-      ports:
-        - "3307:3306"
+        MYSQL_ROOT_PASSWORD: Itson
+      expose:
+        - "3306"
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pItson"]
+        interval: 10s
+        timeout: 5s
+        retries: 10
+        start_period: 30s
       networks:
         - red-global-despliegue
 
@@ -68,9 +85,15 @@ services:
       command: --default-authentication-plugin=mysql_native_password
       environment:
         MYSQL_DATABASE: ReportesInspecciones
-        MYSQL_ROOT_PASSWORD: itson
-      ports:
-        - "3308:3306"
+        MYSQL_ROOT_PASSWORD: Itson
+      expose:
+        - "3306"
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pItson"]
+        interval: 10s
+        timeout: 5s
+        retries: 10
+        start_period: 30s
       networks:
         - red-global-despliegue
 

@@ -11,11 +11,11 @@ services:
       build: ./APIGateway
       ports:
         - "8080:8080"
-      enviroment:
+      environment:
         - PORT=8080
         - CATALOGO_PRODUCTOS_URL=catalogo-productos:9001
-        - CATALOGO_DEFECTOS_URL=catalogo-productos:9003
-        - SERVICIO_INSPECCIONES_URL=catalogo-productos:9010
+        - CATALOGO_DEFECTOS_URL=catalogo-defectos:9003
+        - SERVICIO_INSPECCIONES_URL=servicio-inspecciones:9010
         - SERVICIO_CAMBIO_URL=servicio-cambio:50051
       networks:
         - red-global-despliegue
@@ -26,18 +26,22 @@ services:
         - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       ports:
         - "80:80"
+        - "9001:9001"     #catalogo-productos
+        - "9003:9003"     #catalogo-defectos
+        - "9010:9010"     #servicio-inspecciones
+        - "50051:50051"   #servicio-cambio
       networks:
         - red-global-despliegue
       depends_on:
         - api-gateway
 
     servicio-cambio:
-      build: ./servicio-cambio
-      ports:
-        - "50051:50051" 
+      build: ./ServicioCambio
+      expose:
+        - "50051" 
       env_file:
-        - ./ServicioCambio/ .env
-      enviroment: 
+        - ./ServicioCambio/.env
+      environment: 
         - CAMBIO_URL=0.0.0.0:50051
         - CATALOGO_URL=catalogo-productos:9001
       networks:
