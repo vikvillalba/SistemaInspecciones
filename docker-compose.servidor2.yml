@@ -1,0 +1,79 @@
+version: '3.8'
+services:
+    catalogo-defectos:
+      build: ./CatalogoDefectos
+      expose:
+        - "9003"
+        - "8003"
+      environment:
+        - DB_HOST=db-catalogo-defectos
+      depends_on:
+        - db-catalogo-defectos
+      networks:
+        - red-global-despliegue
+      
+    catalogo-productos:
+      build: ./CatalogoProductos
+      expose:
+        - "9001"
+        - "8001"
+      environment:
+        - DB_HOST=db-catalogo-productos
+      depends_on:
+        - db-catalogo-productos
+      networks:
+        - red-global-despliegue
+
+    servicio-inspecciones:
+      build: ./ServicioInspecciones
+      expose:
+        - "8082"
+        - "9010"
+      environment:
+        - DB_HOST=db-reportes-inspecciones
+        - CATALOGO_PRODUCTOS_HOST=catalogo-productos
+        - CATALOGO_DEFECTOS_HOST=catalogo-defectos
+        - RABBITMQ_HOST=rabbitmq
+      depends_on:
+        - db-reportes-inspecciones
+        - catalogo-defectos
+        - catalogo-productos
+      networks:
+        - red-global-despliegue
+
+    db-catalogo-defectos:
+      image: mysql:8.0
+      command: --default-authentication-plugin=mysql_native_password
+      environment:
+        MYSQL_DATABASE: CatalogoDefectos
+        MYSQL_ROOT_PASSWORD: itson
+      ports:
+        - "3306:3306"
+      networks:
+        - red-global-despliegue
+
+    db-catalogo-productos:
+      image: mysql:8.0
+      command: --default-authentication-plugin=mysql_native_password
+      environment:
+        MYSQL_DATABASE: CatalogoProductos
+        MYSQL_ROOT_PASSWORD: itson
+      ports:
+        - "3307:3306"
+      networks:
+        - red-global-despliegue
+
+    db-reportes-inspecciones:
+      image: mysql:8.0
+      command: --default-authentication-plugin=mysql_native_password
+      environment:
+        MYSQL_DATABASE: ReportesInspecciones
+        MYSQL_ROOT_PASSWORD: itson
+      ports:
+        - "3308:3306"
+      networks:
+        - red-global-despliegue
+
+networks:
+  red-global-despliegue:
+    external: true

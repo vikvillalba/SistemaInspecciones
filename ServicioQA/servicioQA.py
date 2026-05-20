@@ -3,7 +3,8 @@ import websockets
 import json
 
 async def escuchar_notificaciones_qa():
-    uri = "ws://localhost:8000/ws/qa" 
+    host_ws = os.getenv("WS_SERVER_URL", "localhost:8000")
+    uri = f"ws://{host_ws}/ws/qa"
     async with websockets.connect(uri) as websocket:
         print("[QA] Conectado")
         try:

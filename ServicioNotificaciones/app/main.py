@@ -6,6 +6,7 @@ en tiempo real via WebSockets al sistema QA y al ERP.
 import asyncio
 import json
 import logging
+import os
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
  
@@ -20,9 +21,9 @@ logging.basicConfig(
 logger = logging.getLogger("servicio.notificaciones")
  
 
-RABBITMQ_URL = "amqp://guest:guest@localhost:5672/"
-COLA_QA      = "cola.notificaciones.qa"
-COLA_ERP     = "cola.notificaciones.erp"
+RABBITMQ_URL = os.getenv("RABBITMQ_URL", "amqp://guest:guest@localhost:5672/")
+COLA_QA      = os.getenv("COLA_QA", "cola.notificaciones.qa")
+COLA_ERP     = os.getenv("COLA_ERP", "cola.notificaciones.erp")
  
  
 #manejador de conexiones Websocket 

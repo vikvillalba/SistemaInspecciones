@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+    ui-sistema:
+      build: ./frontend
+      ports:
+        - "3000:3000"
+      networks:
+        - red-global-despliegue
+    
+    api-gateway:
+      build: ./APIGateway
+      ports:
+        - "8080:8080"
+      enviroment:
+        - PORT=8080
+        - CATALOGO_PRODUCTOS_URL=catalogo-productos:9001
+        - CATALOGO_DEFECTOS_URL=catalogo-productos:9003
+        - SERVICIO_INSPECCIONES_URL=catalogo-productos:9010
+        - SERVICIO_CAMBIO_URL=servicio-cambio:50051
+      networks:
+        - red-global-despliegue
+
+    nginx:
+      image: nginx:alpine
+      volumes:
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      ports:
+        - "80:80"
+      networks:
+        - red-global-despliegue
+      depends_on:
+        - api-gateway
+
+    servicio-cambio:
+      build: ./servicio-cambio
+      ports:
+        - "50051:50051" 
+      env_file:
+        - ./ServicioCambio/ .env
+      enviroment: 
+        - CAMBIO_URL=0.0.0.0:50051
+        - CATALOGO_URL=catalogo-productos:9001
+      networks:
+          - red-global-despliegue
+networks:
+  red-global-despliegue:
+    external: true

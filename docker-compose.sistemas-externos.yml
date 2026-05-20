@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  sistema-qa:
+    build: ./ServicioQA
+    environment:
+      - WS_SERVER_URL=servicio-notificaciones:8000
+    networks:
+      - red-global-despliegue
+
+  sistema-erp:
+    build: ./SistemaERP
+    environment:
+      - WS_SERVER_URL=servicio-notificaciones:8000
+    networks:
+      - red-global-despliegue
+
+networks:
+  red-global-despliegue:
+    external: true

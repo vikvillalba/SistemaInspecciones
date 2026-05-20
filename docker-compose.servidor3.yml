@@ -22,6 +22,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+    networks:
+      - red-global-despliegue
 
   # servicio de notificaciones
   servicio-notificaciones:
@@ -30,7 +32,7 @@ services:
       dockerfile: Dockerfile
     container_name: servicio-notificaciones
     ports:
-      - "8080:8080"     # Publisher API — POST /eventos/defecto
+      - "8000:8000"     # Publisher API — POST /eventos/defecto
     environment:
       RABBITMQ_URL:    amqp://admin:admin@rabbitmq:5672/
       EXCHANGE:        defectos.exchange
@@ -46,6 +48,12 @@ services:
       rabbitmq:
         condition: service_healthy
     restart: on-failure
+    networks:
+      - red-global-despliegue
 
 volumes:
   rabbitmq_data:
+
+networks: 
+  red-global-despliegue:
+    external: true
