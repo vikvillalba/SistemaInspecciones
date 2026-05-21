@@ -5,6 +5,7 @@ services:
     build: ./ServicioQA
     environment:
       - WS_SERVER_URL=servicio-notificaciones:8000
+      - PYTHONUNBUFFERED=1
     networks:
       - red-global-despliegue
 
@@ -12,9 +13,11 @@ services:
     build: ./SistemaERP
     environment:
       - WS_SERVER_URL=servicio-notificaciones:8000
+      - PYTHONUNBUFFERED=1
     networks:
       - red-global-despliegue
 
 networks:
   red-global-despliegue:
+    name: red-global-despliegue
     external: true

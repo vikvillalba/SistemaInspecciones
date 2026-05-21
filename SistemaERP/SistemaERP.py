@@ -5,7 +5,7 @@ import json
 
 async def escuchar_notificaciones_erp():
     host_ws = os.getenv("WS_SERVER_URL", "localhost:8000")
-    uri = f"ws://{host_ws}/ws/qa"
+    uri = f"ws://{host_ws}/ws/erp"
    
     try:
         async with websockets.connect(uri) as websocket:
